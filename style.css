@@ -890,3 +890,27 @@ html.lite .pulse-dot::after{display:none}
 /* Perbaikan: tabel perbandingan muat di layar HP */
 .compare-tbl{min-width:0}
 @media(max-width:520px){.compare-tbl th,.compare-tbl td{padding:12px 8px;font-size:.84rem}}
+
+/* ===== Perbaikan v2.1 (dari screenshot perangkat) ===== */
+.h-crew-av{flex-shrink:0;padding-left:12px}
+.h-crew p{min-width:0}
+.smart-card{justify-content:flex-start;gap:20px}
+.smart-cta{margin-top:auto;padding-top:8px}
+.take-card .f-row{grid-template-columns:1fr}
+@media(min-width:720px){
+  .now-serving{grid-template-columns:auto 1fr;grid-template-areas:"lbl lbl" "num name" "num meta";column-gap:36px;row-gap:6px}
+  .ns-lbl{grid-area:lbl}
+  .ns-num{grid-area:num;align-self:center}
+  .ns-name{grid-area:name;align-self:end}
+  .ns-meta{grid-area:meta;align-self:start}
+}
+.at-end .float-book,.at-end #btt{opacity:0;visibility:hidden}
+
+/* ===== v2.2: tombol melayang tidak menutupi konten di HP ===== */
+@media(max-width:899px){
+  #btt{display:none}
+  .chat-toggle{width:50px;height:50px;border-radius:16px;font-size:1.3rem}
+  .chat-widget{right:12px;bottom:calc(var(--bottombar-h,0px) + 10px)}
+  .tkt-acts,.take-card,.q-list-box{margin-right:0}
+  .tkt-acts{padding-bottom:70px}
+}

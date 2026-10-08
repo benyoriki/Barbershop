@@ -339,6 +339,7 @@ function initNavbar() {
     const y = window.pageYOffset || root.scrollTop || 0;
     nav.classList.toggle('scr', y > 30);
     document.body.classList.toggle('past-hero', y > 520);
+    document.body.classList.toggle('at-end', y + window.innerHeight > root.scrollHeight - 420);
     if (btt) btt.classList.toggle('vis', y > 500);
     if (progress) {
       const max = root.scrollHeight - root.clientHeight;
