@@ -588,7 +588,15 @@ function capsterSelectOptions(includeAny = true) {
 // ══════════════════════════════════════════════════════════════════════════
 const CAP_STATUS_LABEL = { available: ['🟢', 'Tersedia'], busy: ['✂️', 'Sedang Mencukur'], rest: ['☕', 'Istirahat'], off: ['🔴', 'Offline'] };
 
-function initCapsters() { renderCapsters(); }
+function initCapsters() {
+  renderCapsters();
+  const btn = document.getElementById('capMore'), grid = document.getElementById('capGrid');
+  if (btn && grid) btn.addEventListener('click', () => {
+    const open = grid.classList.toggle('show-all');
+    btn.textContent = open ? 'Tampilkan lebih sedikit' : 'Lihat semua capster';
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+}
 
 function renderCapsters() {
   const grid = document.getElementById('capGrid'); if (!grid) return;
@@ -965,8 +973,9 @@ function initFooter() {
 }
 function shareWebsite() {
   const url = window.location.href;
-  if (navigator.share) navigator.share({ title: CONFIG.brand.name, url });
-  else navigator.clipboard?.writeText(url).then(() => showToast('✅ URL disalin!'));
+  const text = 'Cukur rapi, makin percaya diri! Capster wanita profesional untuk pria & wanita di Bogor. Cek antrean live, booking online, dan nikmati special pijat relaksasi.';
+  if (navigator.share) navigator.share({ title: 'Barbershop Tanteh Susi — Bogor', text, url }).catch(() => {});
+  else if (navigator.clipboard) navigator.clipboard.writeText(text + '\n' + url).then(() => showToast('✅ Tautan disalin!'));
 }
 
 // ══════════════════════════════════════════════════════════════════════════

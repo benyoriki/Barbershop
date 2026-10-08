@@ -2,16 +2,34 @@
 <html lang="id" data-theme="dark">
 <head>
 <meta charset="UTF-8"/>
-<link rel="icon" href="favicon.png" type="image/png" sizes="192x192">
-<link rel="apple-touch-icon" href="favicon.png">
+<link rel="icon" href="favicon.png" type="image/png" sizes="64x64">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="Tanteh Susi"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
-<meta name="description" content="Barbershop Tanteh Susi di Bogor. Cukur rambut pria & wanita, ditangani capster wanita profesional. Booking online dengan DP, cek antrean live, dan nikmati special pijat relaksasi setelah cukur Premium."/>
 <meta name="theme-color" content="#0C1412"/>
+<meta name="description" content="Capster wanita profesional untuk pria & wanita. Cek antrean live, booking online, dan nikmati special pijat relaksasi setelah cukur. Mulai Rp 30.000."/>
+<link rel="canonical" href="https://benyoriki.github.io/Barbershop/"/>
 <meta property="og:type" content="website"/>
-<meta property="og:title" content="Barbershop Tanteh Susi — Cukur & Booking Online Bogor"/>
-<meta property="og:description" content="Cukur rambut pria & wanita oleh capster wanita berpengalaman. Booking online, cek antrean live, dan special pijat relaksasi setelah cukur Premium."/>
-<meta property="og:image" content="favicon.png"/>
-<title>Barbershop Tanteh Susi — Cukur & Booking Online Bogor</title>
+<meta property="og:site_name" content="Barbershop Tanteh Susi"/>
+<meta property="og:locale" content="id_ID"/>
+<meta property="og:url" content="https://benyoriki.github.io/Barbershop/"/>
+<meta property="og:title" content="Barbershop Tanteh Susi Bogor — Cukur Rapi, Makin Percaya Diri"/>
+<meta property="og:description" content="Capster wanita profesional untuk pria & wanita. Cek antrean live, booking online, dan nikmati special pijat relaksasi setelah cukur. Mulai Rp 30.000."/>
+<meta property="og:image" content="https://benyoriki.github.io/Barbershop/img/og-preview.jpg"/>
+<meta property="og:image:secure_url" content="https://benyoriki.github.io/Barbershop/img/og-preview.jpg"/>
+<meta property="og:image:type" content="image/jpeg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:image:alt" content="Capster wanita Barbershop Tanteh Susi sedang merapikan rambut pelanggan"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Barbershop Tanteh Susi Bogor — Cukur Rapi, Makin Percaya Diri"/>
+<meta name="twitter:description" content="Capster wanita profesional untuk pria & wanita. Cek antrean live, booking online, dan nikmati special pijat relaksasi setelah cukur. Mulai Rp 30.000."/>
+<meta name="twitter:image" content="https://benyoriki.github.io/Barbershop/img/og-preview.jpg"/>
+<title>Barbershop Tanteh Susi Bogor — Cukur Rapi, Makin Percaya Diri</title>
 <script>(function(d){var c=d.documentElement;c.className+=' js';try{var t=JSON.parse(localStorage.getItem('tantehSusi_theme'));if(t==='light'||t==='dark'){c.setAttribute('data-theme',t)}}catch(e){}
 if(/Windows NT (5\.|6\.[01])/.test(navigator.userAgent)||(navigator.hardwareConcurrency||4)<=2||(navigator.deviceMemory||4)<=2){c.className+=' lite'}})(document);</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -241,6 +259,7 @@ if(/Windows NT (5\.|6\.[01])/.test(navigator.userAgent)||(navigator.hardwareConc
       <p class="sec-desc">Melayani pelanggan pria &amp; wanita — seluruh capster kami adalah wanita berpengalaman.</p>
     </div>
     <div class="cap-grid" id="capGrid"></div>
+    <div class="cap-more" id="capMoreWrap"><button class="btn-out btn-full" id="capMore" type="button" aria-expanded="false">Lihat semua capster</button></div>
   </div>
 </section>
 
@@ -394,7 +413,7 @@ if(/Windows NT (5\.|6\.[01])/.test(navigator.userAgent)||(navigator.hardwareConc
   </div>
   <div class="ft-bot">
     <p>© 2026 Barbershop Tanteh Susi. Semua hak dilindungi. <br/><span style="font-size:.7rem">Website ini adalah demo lokal (localStorage), belum terhubung backend.</span></p>
-    <button class="share-wb" id="shareBtn">📤 Bagikan Website</button>
+    <div class="ft-acts"><button class="share-wb" id="installBtn" type="button">📥 Pasang Aplikasi</button><button class="share-wb" id="shareBtn" type="button">📤 Bagikan Website</button></div>
   </div>
 </footer>
 
@@ -689,6 +708,14 @@ if(/Windows NT (5\.|6\.[01])/.test(navigator.userAgent)||(navigator.hardwareConc
   <button class="pn-close" id="pnClose" aria-label="Tutup notifikasi">✕</button>
 </div>
 
+<!-- BANNER PASANG APLIKASI -->
+<div class="install-banner" id="installBanner" role="dialog" aria-label="Pasang aplikasi">
+  <div class="ib-ic"><i class="ic ic-scissors"></i></div>
+  <div class="ib-tx"><strong>Pasang aplikasi Tanteh Susi</strong><span>Buka lebih cepat, cek antrean langsung dari layar utama.</span></div>
+  <button class="btn-pri ib-go" id="installGo" type="button">Pasang</button>
+  <button class="ib-x" id="installClose" type="button" aria-label="Tutup">✕</button>
+</div>
+
 <!-- TOAST & BTT -->
 <div id="toast" role="status" aria-live="polite"></div>
 <button id="btt" aria-label="Kembali ke atas">▲</button>
@@ -726,5 +753,6 @@ if(/Windows NT (5\.|6\.[01])/.test(navigator.userAgent)||(navigator.hardwareConc
 </div>
 
 <script src="script.js" defer></script>
+<script src="pwa.js" defer></script>
 </body>
 </html>

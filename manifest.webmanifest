@@ -1,0 +1,24 @@
+{
+  "id": "./",
+  "name": "Barbershop Tanteh Susi",
+  "short_name": "Tanteh Susi",
+  "description": "Booking online, antrean live, dan capster wanita profesional di Bogor.",
+  "lang": "id",
+  "dir": "ltr",
+  "start_url": "./?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0C1412",
+  "theme_color": "#0C1412",
+  "categories": ["lifestyle", "business"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Ambil Antrean", "short_name": "Antrean", "url": "./?source=shortcut#antrean", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Lihat Harga", "short_name": "Harga", "url": "./?source=shortcut#harga", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}
