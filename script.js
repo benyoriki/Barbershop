@@ -218,6 +218,7 @@ function refreshLiveData() {
 }
 
 // ── HELPERS ──
+function setHTML(el, html) { if (el.__h === html) return false; el.__h = html; el.innerHTML = html; return true; }
 const pad2 = n => String(n).padStart(2, '0');
 const rupiah = n => 'Rp ' + Number(n || 0).toLocaleString('id-ID');
 function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
@@ -232,11 +233,11 @@ function svcById(id) { return CONFIG.services.find(s => s.id === id); }
 function capById(id) { return CONFIG.capsters.find(c => c.id === id); }
 function nowJakarta() {
   // Use Intl to get accurate Asia/Jakarta wall-clock time regardless of device TZ
-  const fmt = new Intl.DateTimeFormat('en-US', {
+  const fmt = nowJakarta._fmt || (nowJakarta._fmt = new Intl.DateTimeFormat('en-US', {
     timeZone: CONFIG.brand.timezone, hour12: false,
     year: 'numeric', month: '2-digit', day: '2-digit',
     hour: '2-digit', minute: '2-digit', second: '2-digit', weekday: 'short'
-  });
+  }));
   const parts = {};
   fmt.formatToParts(new Date()).forEach(p => parts[p.type] = p.value);
   const map = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
@@ -271,27 +272,14 @@ function playSound() {
 // ══════════════════════════════════════════════════════════════════════════
 // LOADER / THEME / NAVBAR / HAMBURGER / REVEAL
 // ══════════════════════════════════════════════════════════════════════════
-const LOADER_DURATION = 6000;
+const IS_LITE = document.documentElement.classList.contains('lite');
+const LOADER_DURATION = IS_LITE ? 600 : 1400;
 function initLoader() {
   document.body.style.overflow = 'hidden';
 
-  // floating particles
-  const pWrap = document.getElementById('ldParticles');
-  if (pWrap) {
-    const n = 16;
-    for (let i = 0; i < n; i++) {
-      const s = document.createElement('span');
-      s.style.left = Math.random() * 100 + '%';
-      s.style.bottom = (Math.random() * 20) + 'px';
-      s.style.animationDelay = (Math.random() * 4.5) + 's';
-      s.style.animationDuration = (3.5 + Math.random() * 2.5) + 's';
-      pWrap.appendChild(s);
-    }
-  }
-
   // rotating subtitle
   const subEl = document.getElementById('ldSub');
-  const subs = ['Menyiapkan pengalaman terbaik…', 'Merapikan antrean live…', 'Menyapa capster wanita kami…', 'Hampir siap, tunggu sebentar…'];
+  const subs = ['Menyiapkan antrean live…', 'Hampir siap…'];
   let si = 0;
   if (subEl) {
     const subInterval = setInterval(() => {
@@ -317,12 +305,12 @@ function initLoader() {
     const l = document.getElementById('loader');
     if (l) l.classList.add('out');
     document.body.style.overflow = '';
-    setTimeout(() => { if (l) l.remove(); }, 800);
+    setTimeout(() => { if (l) l.remove(); }, 600);
   }, LOADER_DURATION);
 }
 
 function initTheme() {
-  const saved = StorageService.get('theme', 'light');
+  const saved = StorageService.get('theme', 'dark');
   document.documentElement.setAttribute('data-theme', saved);
   const btn = document.getElementById('themeBtn');
   btn.textContent = saved === 'dark' ? '☀️' : '🌙';
@@ -338,21 +326,39 @@ function initTheme() {
 function initNavbar() {
   const nav = document.getElementById('navbar');
   const links = document.querySelectorAll('.nl');
+  const bnBtns = document.querySelectorAll('.bn-btn[data-target]');
   const progress = document.getElementById('scrollProgress');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scr', window.scrollY > 30);
+  const btt = document.getElementById('btt');
+  const root = document.documentElement;
+  let secs = [], ticking = false, lastId = null;
+  function measure() {
+    secs = Array.prototype.map.call(document.querySelectorAll('section[id]'), sec => ({ id: sec.id, top: sec.offsetTop, bot: sec.offsetTop + sec.offsetHeight }));
+  }
+  function frame() {
+    ticking = false;
+    const y = window.pageYOffset || root.scrollTop || 0;
+    nav.classList.toggle('scr', y > 30);
+    document.body.classList.toggle('past-hero', y > 520);
+    if (btt) btt.classList.toggle('vis', y > 500);
     if (progress) {
-      const h = document.documentElement;
-      const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
-      progress.style.width = Math.min(100, Math.max(0, pct)) + '%';
+      const max = root.scrollHeight - root.clientHeight;
+      progress.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, y / max) : 0) + ')';
     }
-    const pos = window.scrollY + 120;
-    document.querySelectorAll('section[id]').forEach(sec => {
-      if (pos >= sec.offsetTop && pos < sec.offsetTop + sec.offsetHeight) {
-        links.forEach(l => l.classList.toggle('act', l.getAttribute('href') === '#' + sec.id));
-      }
-    });
-  }, { passive: true });
+    const pos = y + 130;
+    let cur = '';
+    for (let i = 0; i < secs.length; i++) if (pos >= secs[i].top && pos < secs[i].bot) cur = secs[i].id;
+    if (cur && cur !== lastId) {
+      lastId = cur;
+      links.forEach(l => l.classList.toggle('act', l.getAttribute('href') === '#' + cur));
+      bnBtns.forEach(b => b.classList.toggle('act', b.dataset.target === '#' + cur));
+    }
+  }
+  function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', () => { measure(); onScroll(); });
+  window.addEventListener('load', () => { measure(); onScroll(); });
+  [800, 2500, 6000].forEach(t => setTimeout(() => { measure(); onScroll(); }, t));
+  measure(); frame();
   links.forEach(l => l.addEventListener('click', closeMobileNav));
   document.getElementById('navBookBtn').addEventListener('click', () => openBookingWizard());
 }
@@ -377,9 +383,10 @@ function closeMobileNav() {
 }
 
 function initReveal() {
+  if (!('IntersectionObserver' in window)) { window._reveal = () => document.querySelectorAll('[data-r]').forEach(el => el.classList.add('vis')); window._reveal(); return; }
   const obs = new IntersectionObserver(entries => entries.forEach(e => {
-    if (e.isIntersecting) e.target.classList.add('vis');
-  }), { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+    if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); }
+  }), { threshold: .08, rootMargin: '0px 0px -30px 0px' });
   document.querySelectorAll('[data-r]').forEach(el => obs.observe(el));
   window._reveal = () => document.querySelectorAll('[data-r]:not(.vis)').forEach(el => obs.observe(el));
 }
@@ -436,10 +443,10 @@ function renderHoursHighlight() {
   const list = document.getElementById('hoursList'); if (!list) return;
   const n = nowJakarta();
   const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', "Jum'at", 'Sabtu'];
-  list.innerHTML = days.map((d, i) => {
+  setHTML(list, days.map((d, i) => {
     const h = CONFIG.hours[i];
     return `<div class="hours-row${i === n.weekday ? ' today' : ''}"><span>${d}</span><span>${h.open}–${h.close}</span></div>`;
-  }).join('');
+  }).join(''));
   const st = getHoursStatus();
   const note = document.getElementById('hoursNote');
   if (st.isOpen) {
@@ -584,13 +591,13 @@ function initCapsters() { renderCapsters(); }
 
 function renderCapsters() {
   const grid = document.getElementById('capGrid'); if (!grid) return;
-  grid.innerHTML = CONFIG.capsters.map((c, i) => {
+  const capHtml = CONFIG.capsters.map((c, i) => {
     const st = S.capsterStatus[c.id] || c.defaultStatus;
     const [icon, label] = CAP_STATUS_LABEL[st];
     const initials = c.name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
     const activeQ = S.queues.find(q => q.capsterId === c.id && q.status === 'processing');
     const avInner = c.photo
-      ? `<img src="${c.photo}" alt="Foto ${escapeHTML(c.name)}" loading="lazy" onerror="this.parentElement.classList.add('noimg');this.remove();"/><span class="cap-av-fallback">${initials}</span>`
+      ? `<img src="${c.photo}" width="400" height="400" alt="Foto ${escapeHTML(c.name)}" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('noimg');this.remove();"/><span class="cap-av-fallback">${initials}</span>`
       : `<span class="cap-av-fallback">${initials}</span>`;
     return `<div class="cap-card" data-r data-r-d="${i % 5}">
       <div class="cap-av${c.photo ? '' : ' noimg'}">${avInner}<span class="cap-status-dot ${st}"></span></div>
@@ -601,6 +608,8 @@ function renderCapsters() {
       <div class="cap-st-txt ${st}">${icon} ${label}${activeQ ? ' ' + queueLabel(activeQ.number) : ''}</div>
     </div>`;
   }).join('');
+  if (setHTML(grid, capHtml) && grid.__n) grid.querySelectorAll('[data-r]').forEach(el => el.classList.add('vis'));
+  grid.__n = 1;
   document.getElementById('statCap').textContent = CONFIG.capsters.length;
   window._reveal && window._reveal();
 }
@@ -721,8 +730,8 @@ function renderNowServing() {
 function renderQList() {
   const list = document.getElementById('qList'); if (!list) return;
   const active = S.queues.filter(q => q.status !== 'done' && q.status !== 'cancelled');
-  if (!active.length) { list.innerHTML = `<div class="q-empty"><div class="qi">🎫</div><p>Belum ada antrean. Jadilah yang pertama mengambil nomor!</p></div>`; return; }
-  list.innerHTML = active.map(q => {
+  if (!active.length) { setHTML(list, `<div class="q-empty"><div class="qi">🎫</div><p>Belum ada antrean. Jadilah yang pertama mengambil nomor!</p></div>`); return; }
+  setHTML(list, active.map(q => {
     const map = { waiting: ['Menunggu', 'wait'], processing: ['⚡ Dicukur', 'proc'] };
     const [lbl, cls] = map[q.status] || ['Menunggu', 'wait'];
     const t = new Date(q.createdAt);
@@ -731,7 +740,7 @@ function renderQList() {
       <div class="q-info"><strong>${escapeHTML(q.name)}</strong><span>${svcById(q.serviceId)?.name || ''} · ${q.capsterId === 'any' ? 'Siapa saja' : (capById(q.capsterId)?.name || '')}</span></div>
       <span class="stbadge ${cls}">${lbl}</span>
     </div>`;
-  }).join('');
+  }).join(''));
 }
 
 function escapeHTML(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
@@ -867,12 +876,16 @@ function initTestimonials() {
     dotsEl.appendChild(d);
   });
   let startX = 0, dragging = false;
-  function goSlide(i) {
-    S.testiIdx = Math.max(0, Math.min(i, total - 1));
+  function goSlide(i, auto) {
     const w = cards[0].offsetWidth + 20;
+    const per = Math.max(1, Math.round((wrap.offsetWidth + 20) / w));
+    const max = Math.max(0, total - per);
+    S.testiIdx = i > max ? (auto ? 0 : max) : Math.max(0, i);
     track.style.transform = `translateX(-${S.testiIdx * w}px)`;
-    dotsEl.querySelectorAll('.t-dot').forEach((d, j) => d.classList.toggle('on', j === S.testiIdx));
+    dotsEl.querySelectorAll('.t-dot').forEach((d, j) => { d.style.display = j > max ? 'none' : ''; d.classList.toggle('on', j === S.testiIdx); });
   }
+  window.addEventListener('resize', () => goSlide(S.testiIdx));
+  setTimeout(() => goSlide(0), 50);
   wrap.addEventListener('touchstart', e => { startX = e.touches[0].pageX; }, { passive: true });
   wrap.addEventListener('touchend', e => {
     const diff = startX - e.changedTouches[0].pageX;
@@ -885,7 +898,7 @@ function initTestimonials() {
     if (diff > 50) goSlide(S.testiIdx + 1); else if (diff < -50) goSlide(S.testiIdx - 1);
   });
   clearInterval(window._testiInterval);
-  window._testiInterval = setInterval(() => goSlide((S.testiIdx + 1) % total), 6000);
+  window._testiInterval = setInterval(() => { if (!document.hidden) goSlide(S.testiIdx + 1, true); }, 6000);
 }
 
 // ══════════════════════════════════════════════════════════════════════════
@@ -922,7 +935,16 @@ function initFAQ() {
 // ══════════════════════════════════════════════════════════════════════════
 // CONTACT / FOOTER
 // ══════════════════════════════════════════════════════════════════════════
+function initMap() {
+  const btn = document.getElementById('mapLoadBtn'); if (!btn) return;
+  btn.addEventListener('click', () => {
+    const box = btn.closest('.map-box'); const fr = box.querySelector('iframe');
+    if (fr && fr.dataset.src) { fr.src = fr.dataset.src; }
+    box.classList.add('loaded');
+  });
+}
 function initContact() {
+  initMap();
   const cards = document.getElementById('ctCards');
   cards.innerHTML = `
     <div class="ct-card"><span class="ci">📍</span><div><strong>Alamat</strong><p>${CONFIG.brand.address}</p><span class="demo-note">DATA DEMO</span></div></div>
@@ -980,15 +1002,6 @@ function initBottomNav() {
     document.getElementById('navLinks').classList.add('open');
     document.getElementById('navScrim').classList.add('on');
   });
-  const btns = nav.querySelectorAll('.bn-btn[data-target]');
-  window.addEventListener('scroll', () => {
-    const pos = window.scrollY + 140;
-    document.querySelectorAll('section[id]').forEach(sec => {
-      if (pos >= sec.offsetTop && pos < sec.offsetTop + sec.offsetHeight) {
-        btns.forEach(b => b.classList.toggle('act', b.dataset.target === '#' + sec.id));
-      }
-    });
-  }, { passive: true });
 }
 
 // Stack sticky-mobile CTA bar directly above the bottom icon nav (instead of
@@ -1018,7 +1031,6 @@ function initProtoNotice() {
 }
 function initBTT() {
   const btn = document.getElementById('btt');
-  window.addEventListener('scroll', () => btn.classList.toggle('vis', window.scrollY > 500), { passive: true });
   btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 }
 
@@ -1877,3 +1889,59 @@ function resetAll() {
   refreshAdmin(); refreshLiveData(); renderPublicGallery(); initTestimonials();
   showToast('🗑️ Semua data direset.');
 }
+
+// ══════════════════════════════════════════════════════════════════════════
+// EMOJI → IKON SVG
+// Windows 7 tidak punya font emoji berwarna; semua emoji diganti ikon vektor
+// (CSS mask, ringan, ikut warna teks) supaya tampil sama di semua perangkat.
+// ══════════════════════════════════════════════════════════════════════════
+(function () {
+  var MAP = {"✂": "scissors", "💈": "pole", "💇": "comb", "💆": "leaf", "🎫": "ticket", "📅": "calendar", "🕐": "clock", "⏰": "clock", "📍": "pin", "📞": "phone", "📧": "mail", "💬": "chat", "📷": "camera", "⭐": "star", "✨": "sparkle", "💫": "sparkle", "🌙": "moon", "☀": "sun", "👀": "eye", "👥": "users", "👩": "user", "⏱": "timer", "✅": "check", "❌": "xcircle", "⚠": "alert", "🔔": "bell", "💳": "card", "🔐": "lock", "🔑": "key", "🚪": "door", "📊": "chart", "📋": "list", "💰": "coins", "💹": "trend", "📈": "trend", "🖼": "image", "⚙": "gear", "📤": "upload", "📥": "download", "💾": "save", "🗑": "trash", "➕": "plus", "➖": "minus", "☁": "cloud", "⚡": "bolt", "☕": "cup", "🙌": "heart", "🎀": "heart", "👋": "smile", "😊": "smile", "😅": "smile", "🧪": "flask", "📄": "file", "🔍": "search", "💲": "dollar", "🎵": "tiktok", "🟢": "dot-g", "🟡": "dot-y", "🔴": "dot-r", "⚪": "dot-w", "🔥": "sparkle", "🏠": "home", "⌂": "home", "☰": "menu", "▲": "up", "➤": "send"};
+  var RE;
+  try { RE = new RegExp('(?:\\p{Extended_Pictographic}\\uFE0F?(?:\\u200D\\p{Extended_Pictographic}\\uFE0F?)*|[\\u2302\\u2630\\u25B2\\u27A4])', 'gu'); } catch (e) { return; }
+  var SKIP = { SCRIPT: 1, STYLE: 1, TEXTAREA: 1, TITLE: 1, NOSCRIPT: 1, IFRAME: 1 };
+  function conv(node) {
+    var par = node.parentNode; if (!par || SKIP[par.nodeName]) return;
+    var t = node.nodeValue; if (!t) return;
+    RE.lastIndex = 0; if (!RE.test(t)) return; RE.lastIndex = 0;
+    if (par.nodeName === 'OPTION') { node.nodeValue = t.replace(RE, function (m) { return MAP[String.fromCodePoint(m.codePointAt(0))] ? '' : m; }).replace(/^\s+/, ''); return; }
+    var frag = document.createDocumentFragment(), last = 0, m, changed = false;
+    while ((m = RE.exec(t))) {
+      var name = MAP[String.fromCodePoint(m[0].codePointAt(0))];
+      if (!name) continue;
+      if (m.index > last) frag.appendChild(document.createTextNode(t.slice(last, m.index)));
+      var i = document.createElement('i');
+      i.className = name.indexOf('dot-') === 0 ? 'ic ic-dot ic-' + name : 'ic ic-' + name;
+      i.setAttribute('aria-hidden', 'true');
+      frag.appendChild(i); last = m.index + m[0].length; changed = true;
+    }
+    if (!changed) return;
+    if (last < t.length) frag.appendChild(document.createTextNode(t.slice(last)));
+    par.replaceChild(frag, node);
+  }
+  function walk(root) {
+    if (!root) return;
+    if (root.nodeType === 3) { conv(root); return; }
+    if (root.nodeType !== 1 || SKIP[root.nodeName]) return;
+    var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false), n, list = [];
+    while ((n = w.nextNode())) list.push(n);
+    for (var k = 0; k < list.length; k++) conv(list[k]);
+  }
+  var pending = [], sched = false, CFG = { childList: true, subtree: true, characterData: true };
+  var mo = new MutationObserver(function (recs) {
+    for (var a = 0; a < recs.length; a++) {
+      var r = recs[a];
+      if (r.type === 'characterData') pending.push(r.target);
+      else for (var b = 0; b < r.addedNodes.length; b++) pending.push(r.addedNodes[b]);
+    }
+    if (!sched && pending.length) { sched = true; (window.requestAnimationFrame || setTimeout)(flush); }
+  });
+  function flush() {
+    sched = false; mo.disconnect();
+    var list = pending; pending = [];
+    for (var a = 0; a < list.length; a++) walk(list[a]);
+    mo.observe(document.body, CFG);
+  }
+  walk(document.body);
+  mo.observe(document.body, CFG);
+})();

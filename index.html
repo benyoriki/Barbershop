@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="light">
+<html lang="id" data-theme="dark">
 <head>
 <meta charset="UTF-8"/>
-<link rel="icon" href="favicon.png" type="image/png">
+<link rel="icon" href="favicon.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="favicon.png">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
 <meta name="description" content="Barbershop Tanteh Susi di Bogor. Cukur rambut pria & wanita, ditangani capster wanita profesional. Booking online dengan DP, cek antrean live, dan nikmati special pijat relaksasi setelah cukur Premium."/>
-<meta name="theme-color" content="#FAF6EE"/>
+<meta name="theme-color" content="#0C1412"/>
 <meta property="og:type" content="website"/>
 <meta property="og:title" content="Barbershop Tanteh Susi — Cukur & Booking Online Bogor"/>
 <meta property="og:description" content="Cukur rambut pria & wanita oleh capster wanita berpengalaman. Booking online, cek antrean live, dan special pijat relaksasi setelah cukur Premium."/>
 <meta property="og:image" content="favicon.png"/>
 <title>Barbershop Tanteh Susi — Cukur & Booking Online Bogor</title>
+<script>(function(d){var c=d.documentElement;c.className+=' js';try{var t=JSON.parse(localStorage.getItem('tantehSusi_theme'));if(t==='light'||t==='dark'){c.setAttribute('data-theme',t)}}catch(e){}
+if(/Windows NT (5\.|6\.[01])/.test(navigator.userAgent)||(navigator.hardwareConcurrency||4)<=2||(navigator.deviceMemory||4)<=2){c.className+=' lite'}})(document);</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500;1,9..144,600;1,9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
@@ -66,34 +68,25 @@
 <!-- HERO -->
 <section class="hero" id="beranda">
   <div class="h-bg"></div>
-  <span class="h-float f1" aria-hidden="true">✂️</span>
-  <span class="h-float f2" aria-hidden="true">✨</span>
-  <span class="h-float f3" aria-hidden="true">💫</span>
   <div class="h-c">
     <div>
-      <div class="h-badge"><span>✨</span><span>CAPSTER WANITA, UNTUK SEMUA — BOGOR</span></div>
-      <h1 class="h-title">Cukur Rapi.<br/>Makin <em>Percaya Diri</em>.</h1>
+      <div class="h-badge"><span>✨</span><span>Capster wanita, untuk semua · Bogor</span></div>
+      <h1 class="h-title">Cukur Rapi.<em>Makin Percaya Diri.</em></h1>
       <p class="h-sub">Potong rambut untuk pria &amp; wanita, ditangani capster wanita yang ramah dan berpengalaman — ditutup dengan special pijat relaksasi setelah selesai.</p>
       <div class="h-cta">
         <button class="btn-pri" id="heroBookBtn">✂️ Booking Sekarang</button>
         <a href="#antrean" class="btn-ghost">👀 Cek Antrean Live</a>
       </div>
+      <div class="h-crew">
+        <div class="h-crew-av" aria-hidden="true">
+          <img src="img/capster-susi.jpg" width="46" height="46" alt="" decoding="async"/><img src="img/capster-nia.jpg" width="46" height="46" alt="" decoding="async"/><img src="img/capster-rani.jpg" width="46" height="46" alt="" decoding="async"/><img src="img/capster-dinda.jpg" width="46" height="46" alt="" decoding="async"/><img src="img/capster-wulan.jpg" width="46" height="46" alt="" decoding="async"/>
+        </div>
+        <p><strong>5 capster wanita berpengalaman</strong>Melayani pria &amp; wanita</p>
+      </div>
       <div class="h-stats">
         <div><div class="st-n" id="statCust">—</div><div class="st-l">Pelanggan Dilayani</div></div>
         <div><div class="st-n" id="statCap">—</div><div class="st-l">Capster Wanita</div></div>
         <div><div class="st-n">5★</div><div class="st-l">Pijat Relaksasi</div></div>
-      </div>
-      <div class="qb-widget">
-        <div class="qb-title">MAU CUKUR KAPAN?</div>
-        <div class="qb-row">
-          <select id="qbDay"><option value="today">Hari Ini</option><option value="tomorrow">Besok</option></select>
-          <select id="qbTime"></select>
-        </div>
-        <div class="qb-row" style="grid-template-columns:1fr">
-          <select id="qbService"></select>
-        </div>
-        <button class="qb-btn" id="qbCheckBtn">CEK SLOT</button>
-        <div class="qb-result" id="qbResult"></div>
       </div>
     </div>
     <div>
@@ -111,10 +104,22 @@
           <div class="lc-item"><div class="lc-num" id="lcServing">0</div><div class="lc-lbl">Dicukur</div></div>
           <div class="lc-item"><div class="lc-num" id="lcWait">—</div><div class="lc-lbl">Est. Tunggu</div></div>
         </div>
-        <div class="lc-crowd" id="lcCrowd"><span>🟡</span><span id="lcCrowdTxt">Memuat status keramaian…</span></div>
+        <div class="lc-crowd" id="lcCrowd"><span id="lcCrowdTxt">Memuat status keramaian…</span></div>
         <button class="lc-detail-btn" id="lcDetailBtn">Cek Detail Antrean</button>
       </div>
     </div>
+  <div class="qb-widget">
+    <div class="qb-title">Mau cukur kapan?</div>
+    <div class="qb-fields">
+      <div class="qb-row">
+        <select id="qbDay" aria-label="Hari"><option value="today">Hari Ini</option><option value="tomorrow">Besok</option></select>
+        <select id="qbTime" aria-label="Jam"></select>
+        <select id="qbService" aria-label="Layanan"></select>
+      </div>
+      <button class="qb-btn" id="qbCheckBtn">Cek slot</button>
+    </div>
+    <div class="qb-result" id="qbResult"></div>
+  </div>
   </div>
 </section>
 
@@ -127,7 +132,7 @@
 <section class="section" id="status-section">
   <div class="container">
     <div class="sec-hdr" data-r>
-      <div class="sec-lbl">STATUS SEKARANG</div>
+      <div class="sec-lbl">Status sekarang</div>
       <h2 class="sec-title">Harus Antre Sekarang?</h2>
       <p class="sec-desc">Cek dulu kondisi antreannya sebelum datang, biar nggak datang sia-sia.</p>
     </div>
@@ -151,10 +156,10 @@
 </section>
 
 <!-- HARGA -->
-<section class="section" id="harga" style="background:var(--bg-alt)">
+<section class="section alt" id="harga">
   <div class="container">
     <div class="sec-hdr" data-r>
-      <div class="sec-lbl">DAFTAR HARGA</div>
+      <div class="sec-lbl">Daftar harga</div>
       <h2 class="sec-title">Cuma 2 Pilihan, Nggak Bikin Bingung</h2>
       <p class="sec-desc">Harga transparan, tanpa biaya tersembunyi.</p>
     </div>
@@ -176,12 +181,12 @@
 </section>
 
 <!-- SPECIAL RELAX -->
-<section class="section" style="padding-top:60px;padding-bottom:60px">
+<section class="section">
   <div class="container">
-    <div class="relax-sec">
+    <div class="relax-sec" data-r>
       <div class="relax-grid">
         <div>
-          <span class="relax-badge">💆 SPECIAL RELAX</span>
+          <span class="relax-badge">💆 Special relax</span>
           <h2 class="relax-title">Selesai Cukur, Jangan Langsung Pulang.</h2>
           <p class="relax-txt">Di Barbershop Tanteh Susi, pengalaman tidak berhenti setelah rambut selesai dirapikan. Untuk layanan Premium, kamu mendapatkan special pijat relaksasi singkat setelah cukur.</p>
           <div class="relax-meta">
@@ -197,10 +202,10 @@
 </section>
 
 <!-- CARA BOOKING -->
-<section class="section" style="background:var(--bg-alt)">
+<section class="section alt">
   <div class="container">
     <div class="sec-hdr" data-r>
-      <div class="sec-lbl">CARA BOOKING</div>
+      <div class="sec-lbl">Cara booking</div>
       <h2 class="sec-title">Booking Dulu, Datang Lebih Santai</h2>
     </div>
     <div class="how-grid">
@@ -231,7 +236,7 @@
 <section class="section" id="capster">
   <div class="container">
     <div class="sec-hdr" data-r>
-      <div class="sec-lbl">CAPSTER KAMI</div>
+      <div class="sec-lbl">Capster kami</div>
       <h2 class="sec-title">Tangan Terampil, Hasil yang Bikin Senyum.</h2>
       <p class="sec-desc">Melayani pelanggan pria &amp; wanita — seluruh capster kami adalah wanita berpengalaman.</p>
     </div>
@@ -240,10 +245,10 @@
 </section>
 
 <!-- ANTREAN LIVE -->
-<section class="section" id="antrean" style="background:var(--bg-alt)">
+<section class="section alt" id="antrean">
   <div class="container">
     <div class="sec-hdr" data-r>
-      <div class="sec-lbl">ANTREAN LIVE</div>
+      <div class="sec-lbl">Antrean live</div>
       <h2 class="sec-title">Sistem Antrean Realtime</h2>
       <p class="sec-desc">Data antrean tersimpan pada perangkat/browser ini (local demo mode).</p>
     </div>
@@ -254,7 +259,7 @@
       <div class="q-stat"><div class="qi">✅</div><div class="qn" id="qDone">0</div><div class="ql">Selesai Hari Ini</div></div>
     </div>
     <div class="now-serving" id="nowServingBox">
-      <div class="ns-lbl">NOW SERVING</div>
+      <div class="ns-lbl">Sedang dilayani</div>
       <div class="ns-num" id="nsNum">–</div>
       <div class="ns-name" id="nsName">Belum ada yang dilayani</div>
       <div class="ns-meta">
@@ -305,7 +310,7 @@
 <section class="section" id="galeri">
   <div class="container">
     <div class="sec-hdr" data-r>
-      <div class="sec-lbl">GALERI HASIL KERJA</div>
+      <div class="sec-lbl">Galeri hasil kerja</div>
       <h2 class="sec-title">Hasil Nyata dari Tangan Profesional</h2>
     </div>
     <div class="gal-grid" id="galGrid"></div>
@@ -313,10 +318,10 @@
 </section>
 
 <!-- TESTIMONI -->
-<section class="section" style="background:var(--bg-alt)">
+<section class="section alt">
   <div class="container">
     <div class="sec-hdr" data-r>
-      <div class="sec-lbl">TESTIMONI</div>
+      <div class="sec-lbl">Testimoni</div>
       <h2 class="sec-title">Kata Mereka yang Sudah Merasakan</h2>
       <span class="demo-tag">Data demo — silakan ganti dengan review asli</span>
     </div>
@@ -331,7 +336,7 @@
 <section class="section" id="faq">
   <div class="container">
     <div class="sec-hdr" data-r>
-      <div class="sec-lbl">FAQ</div>
+      <div class="sec-lbl">Tanya jawab</div>
       <h2 class="sec-title">Pertanyaan yang Sering Ditanyakan</h2>
     </div>
     <div class="faq-list" id="faqList"></div>
@@ -339,11 +344,11 @@
 </section>
 
 <!-- LOKASI -->
-<section class="section" id="lokasi" style="background:var(--bg-alt)">
+<section class="section alt" id="lokasi">
   <div class="container">
     <div class="contact-grid">
       <div>
-        <div class="sec-lbl">KONTAK &amp; LOKASI</div>
+        <div class="sec-lbl">Kontak &amp; lokasi</div>
         <h2 class="sec-title">Hubungi Kami</h2>
         <div class="ct-cards" id="ctCards"></div>
         <div class="q-acts">
@@ -352,20 +357,21 @@
         </div>
       </div>
       <div class="map-box">
-        <span class="map-demo-badge">DATA DEMO</span>
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.7!2d106.7!3d-6.59!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sBogor!5e0!3m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Lokasi (demo)"></iframe>
+        <span class="map-demo-badge">Data demo</span>
+        <iframe data-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.7!2d106.7!3d-6.59!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sBogor!5e0!3m2!1sid!2sid" title="Lokasi (demo)" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        <div class="map-facade"><span class="pin">📍</span><strong>Lokasi Tanteh Susi, Bogor</strong><small>Peta dimuat saat dibutuhkan supaya halaman tetap ringan.</small><button class="btn-pri" id="mapLoadBtn" type="button">Tampilkan peta</button></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- FINAL CTA -->
-<section class="section" style="padding-top:0">
+<section class="section final-wrap">
   <div class="container">
     <div class="final-cta">
       <h2>Mau Cukur, Rapi, Terus Rileks?</h2>
       <p>Booking sekarang dan nikmati pengalaman cukur yang beda dari biasanya.</p>
-      <div class="h-cta" style="justify-content:center">
+      <div class="h-cta">
         <button class="btn-pri" id="finalBookBtn">✂️ Booking Sekarang</button>
         <a href="#antrean" class="btn-ghost">🎫 Ambil Antrean</a>
       </div>
@@ -716,7 +722,7 @@
       <button class="cb-send" id="cbSend">➤</button>
     </div>
   </div>
-  <button class="chat-toggle" id="chatToggle" aria-label="Chat">💬<span class="chat-badge" id="chatBadge">1</span></button>
+  <button class="chat-toggle" id="chatToggle" aria-label="Buka chat">💬<span class="chat-badge" id="chatBadge">1</span></button>
 </div>
 
 <script src="script.js" defer></script>
