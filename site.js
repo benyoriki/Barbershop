@@ -63,9 +63,6 @@
     $('#hdStatus').textContent = s ? 'Buka · ' + os.text : 'Tutup · ' + os.text;
     $('#heroDot').className = 'dot ' + (s ? 'ok' : '');
     $('#heroStatus').textContent = s ? 'Buka sekarang' : 'Sedang tutup';
-    $('#lvDot').className = 'dot ' + (s ? 'ok' : '');
-    $('#lvTitle').textContent = s ? 'Buka sekarang' : 'Sedang tutup';
-    $('#lvSub').textContent = os.text;
     var rows = [0, 1, 2, 3, 4, 5, 6].map(function (d) {
       var h = db.settings.hours[d];
       return '<li class="' + (d === os.now.day ? 'today' : '') + '"><span>' + TC.DAYS[d] + '</span><span>' + (h ? h[0] + '–' + h[1] : 'Libur') + '</span></li>';
@@ -141,13 +138,6 @@
     var done = db.queue.filter(function (q) { return q.status === 'Selesai' && (q.doneDate === TC.today() || new Date(q.created).toDateString() === todayStr); }).length;
     var avg = db.services.length ? Math.round(db.services.reduce(function (a, b) { return a + b.duration; }, 0) / db.services.length) : 30;
     var est = Math.ceil(wait.length * avg / Math.max(1, active.length));
-    $('#qsTotal').textContent = wait.length + serv.length; $('#qsServ').textContent = serv.length; $('#qsEst').textContent = est + 'm'; $('#qsDone').textContent = done;
-    $('#lqWait').textContent = wait.length; $('#lqServ').textContent = serv.length; $('#lqEst').textContent = wait.length ? est + 'm' : '—';
-    $('#nowServing').textContent = serv.length ? 'Dilayani: ' + serv[0].name : 'Belum ada yang dilayani';
-    var list = wait.concat(serv);
-    $('#qList').innerHTML = list.length ? list.map(function (q) {
-      return '<div class="qitem"><div class="no">' + (db.queue.indexOf(q) + 1) + '</div><div class="m"><b>' + E(q.name) + '</b><br><small>' + E((svc(q.serviceId) || {}).name || '') + ' · ' + TC.ago(q.created) + '</small></div><span class="tag ' + (q.status === 'Dicukur' ? 'ok' : 'warn') + '">' + q.status + '</span></div>';
-    }).join('') : '<div class="empty">' + I('ticket') + 'Belum ada antrean. Jadilah yang pertama mengambil nomor!</div>';
 
     /* kontak */
     $('#cAddr').textContent = s.address.replace(' (DATA DEMO)', ''); $('#cWa').textContent = s.wa; $('#cMail').textContent = s.email;
@@ -184,37 +174,40 @@
     $('#lpDot').className = 'dot ' + (os.open ? 'ok' : '');
     $('#lpStatus').textContent = os.open ? 'Buka · ' + os.text : 'Tutup · ' + os.text;
 
-    /* pesan ala chat */
-    var msg;
-    if (!os.open) msg = 'Barbershop sedang tutup. ' + os.text + '. Kamu bisa booking untuk jadwal berikutnya.';
-    else if (!wait.length && !serv.length && !cutting.length) msg = 'Antrean kosong! Langsung datang atau booking, kamu bisa dilayani tanpa menunggu.';
-    else if (!wait.length) msg = 'Tidak ada yang mengantre. ' + ready.length + ' capster siap melayani sekarang.';
-    else msg = 'Ada ' + wait.length + ' orang dalam antrean, estimasi tunggu ±' + est + ' menit.';
-    $('#lpMsg').textContent = msg;
+    /* status singkat */
+    var msg, cls = os.open ? 'ok' : 'closed';
+    if (!os.open) msg = 'Sedang tutup. ' + os.text + '. Kamu tetap bisa booking untuk jadwal berikutnya.';
+    else if (!wait.length && !serv.length && !cutting.length) msg = 'Antrean kosong, langsung datang tanpa menunggu.';
+    else if (!wait.length) msg = ready.length + ' capster siap melayani sekarang, tanpa antre.';
+    else msg = wait.length + ' orang menunggu. Estimasi giliranmu sekitar ' + fmtMin(est) + '.';
+    var mEl = $('#lpMsg'); mEl.textContent = msg; mEl.className = 'lp-msg ' + cls;
     $('#lpWait').textContent = wait.length; $('#lpServ').textContent = Math.max(serv.length, cutting.length);
-    $('#lpBreak').textContent = rest.length; $('#lpEst').textContent = wait.length ? est + 'm' : '—';
+    $('#lpEst').textContent = wait.length ? fmtMin(est) : '—';
+    $('#lpCutN').textContent = Math.max(serv.length, cutting.length) || '';
+    $('#lpRestN').textContent = rest.length || '';
 
     /* sedang dicukur: pasangkan capster dengan pelanggan */
     var rows = [], n = Math.max(cutting.length, serv.length);
     for (var i = 0; i < n; i++) {
       var c = cutting[i], q = serv[i];
-      rows.push('<div class="lrow">' + (c ? '<img src="' + E(c.photo || 'img/logo-96.webp') + '" alt="" width="36" height="36">' : '<div class="no">' + I('scissors', 'sm') + '</div>') +
-        '<div class="m"><b>' + E(c ? c.name : 'Capster') + '</b><small>Mencukur ' + (q ? E(firstName(q.name)) : 'pelanggan') + '</small></div><span class="tag warn">' + I('scissors', 'sm') + 'Dicukur</span></div>');
+      rows.push('<div class="lrow">' + (c ? '<img src="' + E(c.photo || 'img/logo-96.webp') + '" alt="" width="40" height="40">' : '<div class="no">' + I('scissors', 'sm') + '</div>') +
+        '<div class="m"><b>' + E(c ? c.name : 'Capster') + '</b><small>Mencukur ' + (q ? E(firstName(q.name)) : 'pelanggan') + '</small></div><span class="tag warn"><i class="dot warn"></i>Dicukur</span></div>');
     }
     $('#lpCut').innerHTML = rows.length ? rows.join('') : '<div class="lnone">Belum ada yang sedang dicukur.</div>';
 
     /* istirahat */
     $('#lpRest').innerHTML = rest.length ? rest.map(function (c) {
-      return '<div class="lrow"><img src="' + E(c.photo || 'img/logo-96.webp') + '" alt="" width="36" height="36"><div class="m"><b>' + E(c.name) + '</b><small>Kembali sebentar lagi</small></div><span class="tag mute">' + I('coffee', 'sm') + 'Istirahat</span></div>';
+      return '<span class="chip"><img src="' + E(c.photo || 'img/logo-96.webp') + '" alt="" width="26" height="26">' + E(c.name) + '</span>';
     }).join('') : '<div class="lnone">Semua capster sedang bertugas.</div>';
 
     /* antrean berikutnya (nama depan saja demi privasi) */
-    var nx = wait.slice(0, 4).map(function (q) {
-      return '<div class="lrow"><div class="no">' + (db.queue.indexOf(q) + 1) + '</div><div class="m"><b>' + E(firstName(q.name)) + '</b><small>' + E((svc(q.serviceId) || {}).name || '') + ' · ' + TC.ago(q.created) + '</small></div></div>';
+    var nx = wait.slice(0, 3).map(function (q) {
+      return '<div class="lrow slim"><div class="no">' + (db.queue.indexOf(q) + 1) + '</div><div class="m"><b>' + E(firstName(q.name)) + '</b><small>' + E((svc(q.serviceId) || {}).name || '') + ' · ' + TC.ago(q.created) + '</small></div></div>';
     });
-    if (wait.length > 4) nx.push('<div class="lnone">+' + (wait.length - 4) + ' antrean lainnya</div>');
+    if (wait.length > 3) nx.push('<div class="lmore">+' + (wait.length - 3) + ' antrean lainnya</div>');
     $('#lpNext').innerHTML = nx.length ? nx.join('') : '<div class="lnone">Belum ada antrean. Jadilah yang pertama!</div>';
   }
+  function fmtMin(m) { if (m > 240) return '4j+'; if (m < 60) return m + 'm'; return Math.floor(m / 60) + 'j' + (m % 60 ? ' ' + (m % 60) + 'm' : ''); }
   function liveOpen(on) {
     var p = $('#livePanel'), f = $('#liveFab');
     if (on === undefined) on = !p.classList.contains('open');
@@ -223,7 +216,6 @@
   }
   $('#liveFab').addEventListener('click', function () { liveOpen(); });
   $('#liveX').addEventListener('click', function () { liveOpen(false); });
-  $('#lpTake').addEventListener('click', function () { liveOpen(false); });
   document.addEventListener('click', function (e) {
     var t = e.target.closest ? e.target.closest('[data-live]') : null;
     if (t) { e.preventDefault(); liveOpen(true); return; }
@@ -314,12 +306,22 @@
     showForm(false); f.reset(); render();
   });
 
-  /* ---------- form antrean & pesan ---------- */
+  /* ---------- form antrean (modal) & pesan ---------- */
+  function openQ() { db = TC.load(); fillSelects(); liveOpen(false); $('#queueModal').classList.add('open'); document.body.style.overflow = 'hidden'; setTimeout(function () { $('#qName').focus(); }, 60); }
+  function closeQ() { $('#queueModal').classList.remove('open'); if (!$('#bookingModal').classList.contains('open')) document.body.style.overflow = ''; }
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest ? e.target.closest('[data-queue]') : null;
+    if (t) { e.preventDefault(); $('#menu').classList.remove('open'); openQ(); return; }
+    if ((e.target.closest && e.target.closest('[data-qclose]')) || e.target === $('#queueModal')) closeQ();
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && $('#queueModal').classList.contains('open')) closeQ(); });
+
   $('#qForm').addEventListener('submit', function (e) {
     e.preventDefault(); db = TC.load(); var f = this;
     var q = { id: TC.uid('q'), name: f.name.value.trim(), wa: f.wa.value.trim(), serviceId: f.svc.value, status: 'Menunggu', created: Date.now() };
     db.queue.push(q); TC.notify(db, 'queue', 'Antrean walk-in: ' + q.name); TC.save(db);
-    f.reset(); toast('Nomor antrean kamu: ' + db.queue.length); render();
+    f.reset(); closeQ(); render(); toast('Nomor antrean kamu: ' + db.queue.length);
+    setTimeout(function () { liveOpen(true); }, 350);
   });
   $('#msgForm').addEventListener('submit', function (e) {
     e.preventDefault(); db = TC.load(); var f = this;
@@ -332,5 +334,15 @@
   window.addEventListener('tc:change', render);
   window.addEventListener('storage', render);
   setInterval(function () { if (!document.hidden) { renderStatus(); renderLive(); } }, 60000);
+
+  /* animasi muncul saat discroll (sekali jalan, ringan) */
+  try {
+    if ('IntersectionObserver' in window) {
+      document.documentElement.classList.add('js');
+      var io = new IntersectionObserver(function (en) { en.forEach(function (x) { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } }); }, { rootMargin: '0px 0px -6% 0px' });
+      $$('.head,.promos,.upsell,.faq,.cta,.note,.live,.two,.hstats').forEach(function (e) { e.classList.add('rv'); io.observe(e); });
+      $$('.plans,.grid4,.caps,.steps,.rev,.qstats,.trust .wrap').forEach(function (e) { e.classList.add('rv', 'stag'); io.observe(e); });
+    }
+  } catch (e) {}
   render();
 })();
