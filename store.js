@@ -5,7 +5,7 @@
 
   function genData() {
     var names = ['Andi', 'Budi', 'Citra', 'Dewi', 'Eko', 'Fajar', 'Gita', 'Hadi', 'Intan', 'Joko', 'Kiki', 'Lina', 'Maman', 'Nanda', 'Oki', 'Putri', 'Rudi', 'Sari', 'Tono', 'Umi'];
-    var methods = ['Tunai', 'Tunai', 'QRIS', 'Transfer', 'Tunai', 'Debit'];
+    var methods = ['Tunai', 'Tunai', 'QRIS', 'QRIS', 'Tunai', 'Tunai'];
     var caps = ['c1', 'c2', 'c3'], tx = [], cash = [], seq = 0;
     for (var d = 13; d >= 0; d--) {
       var date = today(-d), cnt = d === 0 ? 2 : 3 + ((d * 5 + 2) % 4);
@@ -69,9 +69,9 @@
       transactions: gen.tx,
       cash: gen.cash,
       capsters: [
-        { id: 'c1', name: 'Susi', exp: 10, spec: 'Founder & Senior Capster', rating: 4.9, status: 'Tersedia', photo: 'img/capster1.jpg' },
-        { id: 'c2', name: 'Nia', exp: 5, spec: 'Layering & Styling', rating: 4.8, status: 'Tersedia', photo: 'img/capster2.jpg' },
-        { id: 'c3', name: 'Rani', exp: 4, spec: 'Potong Rapi & Cepat', rating: 4.8, status: 'Sedang Mencukur', photo: 'img/capster3.jpg' }
+        { id: 'c1', name: 'Susi', exp: 10, spec: 'Founder & Senior Capster', rating: 4.9, status: 'Tersedia', photo: 'img/capster1.webp' },
+        { id: 'c2', name: 'Nia', exp: 5, spec: 'Layering & Styling', rating: 4.8, status: 'Istirahat', photo: 'img/capster2.webp' },
+        { id: 'c3', name: 'Rani', exp: 4, spec: 'Potong Rapi & Cepat', rating: 4.8, status: 'Sedang Mencukur', photo: 'img/capster3.webp' }
       ],
       services: [
         { id: 's1', name: 'Basic', desc: 'Layanan esensial, cepat & rapi', price: 30000, duration: 30, popular: false,

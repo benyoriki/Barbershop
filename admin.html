@@ -6,7 +6,6 @@
 <title>Dasbor Admin — Tukang Cukur</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="img/favicon.png">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
 :root{--blue:#5b9bd5;--purple:#b58ae0;--r:20px}
@@ -40,7 +39,7 @@ body{min-height:100vh;background:radial-gradient(900px 420px at 90% -8%,rgba(216
 
 /* ---------- shell ---------- */
 .app{display:grid;grid-template-columns:272px 1fr;min-height:100vh}
-aside{background:color-mix(in srgb,var(--bg2) 92%,transparent);backdrop-filter:blur(10px);border-right:1px solid var(--line);padding:18px 14px;position:sticky;top:0;height:100vh;overflow:auto;display:flex;flex-direction:column}
+aside{background:var(--bg2);border-right:1px solid var(--line);padding:18px 14px;position:sticky;top:0;height:100vh;overflow:auto;display:flex;flex-direction:column}
 .sb-brand{display:flex;align-items:center;gap:11px;padding:4px 8px 18px}
 .sb-brand .logo{width:44px;height:44px;border-radius:13px;background:#000;display:grid;place-items:center;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.4)}
 .sb-brand .logo img{width:40px;height:40px}
@@ -57,7 +56,7 @@ aside{background:color-mix(in srgb,var(--bg2) 92%,transparent);backdrop-filter:b
 .sb-user button{margin-left:auto;width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);color:var(--muted);cursor:pointer;display:grid;place-items:center}
 .sb-user button:hover{color:var(--bad);border-color:var(--bad)}
 .main{min-width:0;padding-bottom:30px}
-.topbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:10px;padding:14px clamp(14px,3vw,34px);background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.topbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:10px;padding:14px clamp(14px,3vw,34px);background:var(--bg);border-bottom:1px solid var(--line)}
 .topbar h1{font-size:21px;letter-spacing:-.02em;line-height:1.15}
 .topbar .sub{display:block;color:var(--muted);font-size:12.5px;font-weight:500}
 .topbar .sp{flex:1}
@@ -140,7 +139,7 @@ td.num,th.num{text-align:right;white-space:nowrap}
 .hrow{display:grid;grid-template-columns:80px 1fr 1fr auto;gap:8px;align-items:center;margin-bottom:8px;font-size:14px}
 .hrow>*{min-width:0}.hrow input[type=time]{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:9px;width:100%}
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:79}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}
 .modal.open{display:flex}.modal .card{width:min(520px,100%);max-height:92vh;overflow:auto}
 .modal .card.wide{width:min(460px,100%)}
 .seg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
@@ -174,7 +173,7 @@ td.num,th.num{text-align:right;white-space:nowrap}
   aside.open{transform:none}.overlay.open{display:block}
   #burger{display:grid}.g11,.g3{grid-template-columns:minmax(0,1fr)}.chipclock{display:none}
   .main{padding-bottom:84px}
-  .bottom{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:10px;right:10px;bottom:max(10px,env(safe-area-inset-bottom));z-index:60;background:color-mix(in srgb,var(--card) 94%,transparent);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:22px;padding:6px;box-shadow:0 14px 40px rgba(0,0,0,.5)}
+  .bottom{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:10px;right:10px;bottom:max(10px,env(safe-area-inset-bottom));z-index:60;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:6px;box-shadow:0 14px 40px rgba(0,0,0,.5)}
   .bottom button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 2px;border:0;background:none;color:var(--muted);font-size:10.5px;font-weight:700;cursor:pointer;border-radius:16px;position:relative}
   .bottom button.on{background:linear-gradient(135deg,#e9cd86,#c39b4f);color:#1a1405}
   .bottom .dotn{position:absolute;top:4px;right:22%;width:8px;height:8px;border-radius:50%;background:var(--bad)}
@@ -185,16 +184,22 @@ td.num,th.num{text-align:right;white-space:nowrap}
   aside,.topbar,.bottom,.filters,.noprint,#loader,.toast{display:none!important}
   body{background:#fff!important;color:#000}.app{display:block}.card{box-shadow:none;border:1px solid #ccc;background:#fff;color:#000}
 }
+.qrpay{display:flex;gap:14px;align-items:center;background:var(--bg2,#0e1815);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:12px}
+.qrpay .qrimg{background:#fff;border-radius:10px;padding:6px;flex:none;width:132px}
+.qrpay .qrimg img{display:block;width:100%;height:auto}
+.qrpay .qrinfo{display:grid;gap:6px;min-width:0}.qrpay .qrinfo small{color:var(--muted)}.qrpay .qrinfo b{font-size:20px;color:var(--gold)}
+.qrok{display:flex;gap:8px;align-items:center;font-size:13px;font-weight:700;cursor:pointer}
 </style>
 </head>
 <body>
-<div id="loader"><div class="box"><img src="img/logo.png" alt="Logo"><div class="nm">Tukang Cukur</div><div class="sb">Dasbor Admin</div><div class="bar"><i></i></div></div></div>
+<div id="loader"><div class="box"><img src="img/logo-192.webp" width="112" height="112" alt="Logo"><div class="nm">Tukang Cukur</div><div class="sb">Dasbor Admin</div><div class="bar"><i></i></div></div></div>
+<script>(function(){var s=1;try{var n=performance.getEntriesByType("navigation")[0],t=n?n.type:"navigate";if(t==="back_forward")s=0;else if(t==="navigate"&&document.referrer&&document.referrer.indexOf(location.origin)===0)s=0}catch(e){}if(!s){var l=document.getElementById("loader");if(l)l.parentNode.removeChild(l)}})()</script>
 
 <!-- ============ LOGIN ============ -->
 <div class="login hide" id="login">
   <div class="art">
     <div>
-      <img class="big" src="img/logo.png" alt="Logo Tukang Cukur">
+      <img class="big" src="img/logo-192.webp" width="120" height="120" alt="Logo Tukang Cukur">
       <h2>Kelola barbershop dari satu dasbor.</h2>
       <p>Kasir, booking, antrean, kas masuk &amp; keluar, laporan, sampai cetak struk termal — semua dalam satu tempat.</p>
       <div class="feat">
@@ -227,7 +232,7 @@ td.num,th.num{text-align:right;white-space:nowrap}
 <div class="app hide" id="app">
   <div class="overlay" id="overlay"></div>
   <aside id="side">
-    <div class="sb-brand"><span class="logo"><img src="img/logo.png" alt=""></span><span><b id="sbName">Tukang Cukur</b><small>Dasbor Admin</small></span></div>
+    <div class="sb-brand"><span class="logo"><img src="img/logo-96.webp" width="40" height="40" alt=""></span><span><b id="sbName">Tukang Cukur</b><small>Dasbor Admin</small></span></div>
     <div id="navList"></div>
     <div class="sb-user"><span class="avatar" id="avatar">A</span><span><b id="uName">Admin</b><small id="uMail"></small></span><button id="logout" title="Keluar" aria-label="Keluar"></button></div>
   </aside>
@@ -251,6 +256,7 @@ td.num,th.num{text-align:right;white-space:nowrap}
 
 <script src="store.js"></script>
 <script src="icons.js"></script>
+<script src="sim.js"></script>
 <script>
 setTimeout(function(){var l=document.getElementById('loader');if(l){l.classList.add('hide');setTimeout(function(){l.remove()},700)}},3000);
 </script>
@@ -260,9 +266,9 @@ const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelect
 const E=TC.esc, R=TC.rupiah, I=TC.i, pad=n=>String(n).padStart(2,'0');
 let db, view='dash', self=false;
 const filt={book:'Semua',queue:'Aktif',range:7,cashRange:'7',cashType:'Semua',msg:'Semua',repDate:TC.today(),prdTab:'svc',trRange:'7'};
-const pos={tab:'svc',q:'',cart:[],customer:'',wa:'',capsterId:'',promo:'',disc:'',method:'Tunai',paid:'',ref:null};
+const pos={tab:'svc',q:'',cart:[],customer:'',wa:'',capsterId:'',promo:'',disc:'',method:'Tunai',paid:'',ref:null,qok:false};
 const ST_B=['Baru','Dikonfirmasi','Selesai','Batal'];
-const METHODS=[['Tunai','banknote'],['QRIS','zap'],['Transfer','credit-card'],['Debit','credit-card']];
+const METHODS=[['Tunai','banknote'],['QRIS','zap']];
 const COLORS={Tunai:'#d8b565',QRIS:'#4cc38a',Transfer:'#5b9bd5',Debit:'#b58ae0'};
 const CAT_IN=['Modal','Penjualan','Lainnya'], CAT_OUT=['Sewa','Listrik & Air','Gaji/Komisi','Beli Produk','Operasional','Lainnya'];
 
@@ -358,10 +364,11 @@ const NAV=[
  ['Operasional',[['bookings','Booking','calendar'],['queue','Antrean','ticket'],['capsters','Capster','scissors'],['customers','Pelanggan','users']]],
  ['Keuangan',[['cash','Kas Masuk/Keluar','wallet'],['cashier','Laporan Kasir','printer'],['reports','Rekap Laporan','chart']]],
  ['Komunikasi',[['messages','Pesan Masuk','message'],['notifs','Notifikasi','bell']]],
+ ['Uji Performa',[['sim','Simulasi Play','zap']]],
  ['Pengaturan',[['prices','Harga & Produk','tag'],['promos','Atur Promo','percent'],['settings','Pengaturan','sliders']]]
 ];
 const FLAT=NAV.flatMap(g=>g[1]);
-const SUB={dash:'Gambaran bisnis hari ini',pos:'Transaksi kasir & cetak struk',bookings:'Kelola jadwal booking pelanggan',queue:'Antrean walk-in langsung',capsters:'Tambah, ubah, atur status capster',customers:'Daftar pelanggan & riwayat belanja',cash:'Catat uang masuk dan keluar',cashier:'Rekap transaksi kasir per hari',reports:'Pendapatan, pengeluaran, dan laba',messages:'Pesan dari pelanggan',notifs:'Aktivitas terbaru',prices:'Paket layanan & produk',promos:'Kode diskon pelanggan',settings:'Profil, jam buka, struk, dan akun'};
+const SUB={sim:'Tes performa: transaksi, pembayaran, antrean berjalan',dash:'Gambaran bisnis hari ini',pos:'Transaksi kasir & cetak struk',bookings:'Kelola jadwal booking pelanggan',queue:'Antrean walk-in langsung',capsters:'Tambah, ubah, atur status capster',customers:'Daftar pelanggan & riwayat belanja',cash:'Catat uang masuk dan keluar',cashier:'Rekap transaksi kasir per hari',reports:'Pendapatan, pengeluaran, dan laba',messages:'Pesan dari pelanggan',notifs:'Aktivitas terbaru',prices:'Paket layanan & produk',promos:'Kode diskon pelanggan',settings:'Profil, jam buka, struk, dan akun'};
 const counts=()=>({bookings:db.bookings.filter(b=>b.status==='Baru').length,queue:db.queue.filter(q=>q.status==='Menunggu').length,messages:db.messages.filter(m=>!m.read).length,notifs:db.notifications.filter(n=>!n.read).length});
 function renderNav(){
   const c=counts();
@@ -466,7 +473,7 @@ function dailyInner(date){
 }
 
 /* ---------- kasir (POS) ---------- */
-function resetPos(){Object.assign(pos,{cart:[],customer:'',wa:'',capsterId:'',promo:'',disc:'',method:'Tunai',paid:'',ref:null,q:''})}
+function resetPos(){Object.assign(pos,{cart:[],customer:'',wa:'',capsterId:'',promo:'',disc:'',method:'Tunai',paid:'',ref:null,q:'',qok:false})}
 function calc(){
   const sub=sum(pos.cart,l=>l.price*l.qty),p=promoBy(pos.promo),pd=p?Math.round(sub*p.discount/100):0,disc=Math.max(0,Number(pos.disc)||0);
   const total=Math.max(0,sub-pd-disc),paid=pos.method==='Tunai'?(pos.paid===''?total:Number(pos.paid)):total;
@@ -481,7 +488,7 @@ function addCart(type,id){
 }
 function openPos(ref){
   resetPos();
-  if(ref.type==='booking'){const b=db.bookings.find(x=>x.id===ref.id),s=svc(b.serviceId);pos.customer=b.name;pos.wa=b.wa;pos.capsterId=b.capsterId||'';pos.promo=b.promo||'';if(s)pos.cart.push({type:'svc',id:s.id,name:'Tukang '+s.name,price:s.price,qty:1});pos.ref=ref}
+  if(ref.type==='booking'){const b=db.bookings.find(x=>x.id===ref.id),s=svc(b.serviceId);pos.customer=b.name;pos.wa=b.wa;pos.capsterId=b.capsterId||'';pos.promo=b.promo||'';if(b.pay==='QRIS')pos.method='QRIS';if(s)pos.cart.push({type:'svc',id:s.id,name:'Tukang '+s.name,price:s.price,qty:1});pos.ref=ref}
   else{const q=db.queue.find(x=>x.id===ref.id),s=svc(q.serviceId);pos.customer=q.name;pos.wa=q.wa||'';if(s)pos.cart.push({type:'svc',id:s.id,name:'Tukang '+s.name,price:s.price,qty:1});pos.ref=ref}
   go('pos');
 }
@@ -489,7 +496,7 @@ function posSummaryHTML(){
   const c=calc();
   return `<div class="r"><span>Subtotal</span><span>${R(c.sub)}</span></div>${c.pd?`<div class="r"><span>Promo ${E(c.p.code)} (${c.p.discount}%)</span><span>-${R(c.pd)}</span></div>`:''}${c.disc?`<div class="r"><span>Diskon manual</span><span>-${R(c.disc)}</span></div>`:''}<div class="r t"><span>Total</span><span>${R(c.total)}</span></div>${pos.method==='Tunai'?`<div class="r"><span>Diterima</span><span>${R(c.paid)}</span></div><div class="r" style="color:${c.short?'var(--bad)':'var(--ok)'}"><span>${c.short?'Kurang':'Kembalian'}</span><span>${R(c.short?c.total-c.paid:c.change)}</span></div>`:''}`;
 }
-function updPos(){const el=$('#posSum');if(el)el.innerHTML=posSummaryHTML();const b1=$('#payPrint'),b2=$('#payOnly');const c=calc(),dis=!pos.cart.length||(pos.method==='Tunai'&&c.short);[b1,b2].forEach(b=>{if(b){b.disabled=dis;b.style.opacity=dis?.5:1}})}
+function updPos(){const el=$('#posSum');if(el)el.innerHTML=posSummaryHTML();const b1=$('#payPrint'),b2=$('#payOnly');const c=calc(),dis=!pos.cart.length||(pos.method==='Tunai'&&c.short)||(pos.method==='QRIS'&&!pos.qok);[b1,b2].forEach(b=>{if(b){b.disabled=dis;b.style.opacity=dis?.5:1}})}
 function viewPos(){
   const q=pos.q.toLowerCase();
   const items=pos.tab==='svc'?db.services.map(s=>({type:'svc',id:s.id,name:'Tukang '+s.name,price:s.price,sub:'±'+s.duration+' menit',icon:s.popular?'sparkles':'scissors',color:'c-gold',off:false})):db.products.map(p=>({type:'prd',id:p.id,name:p.name,price:p.price,sub:'Stok '+p.stock,icon:'package',color:'c-blue',off:p.stock<1}));
@@ -509,6 +516,7 @@ function viewPos(){
     <div class="grid g11" style="margin:0;gap:10px"><div class="field"><label>Kode promo</label><input data-pf="promo" value="${E(pos.promo)}" placeholder="BARU10" style="text-transform:uppercase"></div><div class="field"><label>Diskon manual (Rp)</label><input data-pf="disc" type="number" min="0" inputmode="numeric" value="${E(pos.disc)}" placeholder="0"></div></div>
     <div class="field"><label>Metode pembayaran</label><div class="seg">${METHODS.map(([m,i])=>`<button type="button" class="${pos.method===m?'on':''}" data-pm="${m}">${ic(i)}${m}</button>`).join('')}</div></div>
     ${pos.method==='Tunai'?`<div class="field"><label>Uang diterima</label><input data-pf="paid" type="number" min="0" inputmode="numeric" value="${E(pos.paid)}" placeholder="${c.total}"><div class="quick"><button class="btn sm" data-qp="">Uang pas</button>${[20000,50000,100000,200000].map(v=>`<button class="btn sm" data-qp="${v}">${short(v)}</button>`).join('')}</div></div>`:''}
+    ${pos.method==='QRIS'?`<div class="qrpay"><div class="qrimg"><img src="img/qris.webp" alt="QRIS Tukang Cukur" width="200" height="231"></div><div class="qrinfo"><small>Scan untuk bayar</small><b>${R(c.total)}</b><label class="qrok"><input type="checkbox" data-qok ${pos.qok?'checked':''}> Pembayaran sudah masuk</label></div></div>`:''}
     <div class="sum" id="posSum">${posSummaryHTML()}</div>
     <div style="display:grid;gap:8px"><button class="btn gold" id="payPrint" data-act="payPrint" style="padding:14px">${ic('printer')}Bayar &amp; Cetak Struk</button><button class="btn" id="payOnly" data-act="payOnly">${ic('check')}Bayar saja (tanpa cetak)</button></div>
   </div></div>`;
@@ -517,6 +525,7 @@ function payNow(print){
   const c=calc();
   if(!pos.cart.length)return toast('Keranjang masih kosong');
   if(pos.method==='Tunai'&&c.short)return toast('Uang diterima masih kurang');
+  if(pos.method==='QRIS'&&!pos.qok)return toast('Konfirmasi dulu pembayaran QRIS sudah masuk');
   db=TC.load();
   const date=TC.today(),n=TC.wibNow(),time=pad(n.h)+':'+pad(n.m);
   const seq=db.transactions.filter(t=>t.date===date).length+1,no='TC'+date.replace(/-/g,'').slice(2)+'-'+String(seq).padStart(3,'0');
@@ -577,7 +586,7 @@ V.bookings=()=>{
   const f=filt.book,rows=[...db.bookings].sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time)).filter(b=>f==='Semua'||b.status===f);
   const price=b=>{const s=svc(b.serviceId),p=b.promo?db.promos.find(x=>x.code===b.promo):null;return s?Math.round(s.price*(100-(p?p.discount:0))/100):0};
   return `<div class="filters">${['Semua',...ST_B].map(s=>`<button class="chip ${f===s?'on':''}" data-fb="${s}">${s}</button>`).join('')}<span class="sp"></span><button class="btn gold sm" data-act="addBooking">${ic('plus')}Tambah Booking</button></div>
-  <div class="card scroll">${rows.length?`<table><thead><tr><th>Pelanggan</th><th>Layanan</th><th>Capster</th><th>Jadwal</th><th class="num">Harga</th><th>Status</th><th>Aksi</th></tr></thead><tbody>${rows.map(b=>{const wa=b.wa?'https://wa.me/'+b.wa.replace(/^0/,'62').replace(/\D/g,''):'';return `<tr><td><b>${E(b.name)}</b><br><small style="color:var(--muted)">${E(b.wa)}</small></td><td>${E((svc(b.serviceId)||{}).name||'-')}${b.promo?`<br><span class="tag">${E(b.promo)}</span>`:''}</td><td>${E((cap(b.capsterId)||{}).name||'Siapa saja')}</td><td>${dlabel(b.date)}<br>${b.time}</td><td class="num">${R(price(b))}</td><td><span class="tag ${tagFor(b.status)}">${b.status}</span></td><td><div class="acts">${b.status==='Baru'?`<button class="btn sm gold" data-bs="${b.id}|Dikonfirmasi">Konfirmasi</button>`:''}${b.status==='Dikonfirmasi'?`<button class="btn sm gold" data-bpos="${b.id}">${ic('receipt')}Bayar</button>`:''}${b.status==='Baru'||b.status==='Dikonfirmasi'?`<button class="btn sm danger" data-bs="${b.id}|Batal">Batal</button>`:''}${wa?`<a class="btn sm" target="_blank" rel="noopener" href="${wa}">${ic('message')}</a>`:''}<button class="btn sm" data-del="booking|${b.id}" aria-label="Hapus">${ic('trash')}</button></div></td></tr>`}).join('')}</tbody></table>`:empty('Tidak ada booking','calendar')}</div>`;
+  <div class="card scroll">${rows.length?`<table><thead><tr><th>Pelanggan</th><th>Layanan</th><th>Capster</th><th>Jadwal</th><th class="num">Harga</th><th>Status</th><th>Aksi</th></tr></thead><tbody>${rows.map(b=>{const wa=b.wa?'https://wa.me/'+b.wa.replace(/^0/,'62').replace(/\D/g,''):'';return `<tr><td><b>${E(b.name)}</b><br><small style="color:var(--muted)">${E(b.wa)}</small></td><td>${E((svc(b.serviceId)||{}).name||'-')}${b.promo?`<br><span class="tag">${E(b.promo)}</span>`:''}</td><td>${E((cap(b.capsterId)||{}).name||'Siapa saja')}</td><td>${dlabel(b.date)}<br>${b.time}</td><td class="num">${R(price(b))}<br><small style="color:var(--muted)">${E(b.pay||'Tunai')}</small></td><td><span class="tag ${tagFor(b.status)}">${b.status}</span></td><td><div class="acts">${b.status==='Baru'?`<button class="btn sm gold" data-bs="${b.id}|Dikonfirmasi">Konfirmasi</button>`:''}${b.status==='Dikonfirmasi'?`<button class="btn sm gold" data-bpos="${b.id}">${ic('receipt')}Bayar</button>`:''}${b.status==='Baru'||b.status==='Dikonfirmasi'?`<button class="btn sm danger" data-bs="${b.id}|Batal">Batal</button>`:''}${wa?`<a class="btn sm" target="_blank" rel="noopener" href="${wa}">${ic('message')}</a>`:''}<button class="btn sm" data-del="booking|${b.id}" aria-label="Hapus">${ic('trash')}</button></div></td></tr>`}).join('')}</tbody></table>`:empty('Tidak ada booking','calendar')}</div>`;
 };
 
 V.queue=()=>{
@@ -586,7 +595,7 @@ V.queue=()=>{
   <div class="card">${list.length?`<div class="list">${list.map(({q,no})=>`<div class="it"><div class="bx" style="background:linear-gradient(135deg,#e9cd86,#c39b4f);color:#1a1405;font-weight:800">${no}</div><div class="m"><b>${E(q.name)}</b> <span class="tag ${tagFor(q.status)}">${q.status}</span><br><small>${E((svc(q.serviceId)||{}).name||'-')} · ${TC.ago(q.created)}${q.wa?' · '+E(q.wa):''}</small></div><div class="acts">${q.status==='Menunggu'?`<button class="btn sm gold" data-qs="${q.id}|Dicukur">Panggil</button>`:''}${q.status==='Dicukur'?`<button class="btn sm gold" data-qpos="${q.id}">${ic('receipt')}Bayar</button>`:''}${q.status==='Menunggu'||q.status==='Dicukur'?`<button class="btn sm danger" data-qs="${q.id}|Batal">Batal</button>`:''}<button class="btn sm" data-del="queue|${q.id}" aria-label="Hapus">${ic('trash')}</button></div></div>`).join('')}</div>`:empty('Antrean kosong','ticket')}</div>`;
 };
 
-V.capsters=()=>`<div class="filters"><button class="btn gold sm" data-act="addCap">${ic('plus')}Tambah Capster</button></div><div class="cards">${db.capsters.map(c=>{const st=c.status==='Tersedia'?'ok':c.status==='Libur'?'mute':'warn';const done=txs().filter(t=>t.capsterId===c.id).length,rev=sum(txs().filter(t=>t.capsterId===c.id),t=>t.total);return `<div class="card ccard"><div class="ph">${c.photo?`<img src="${E(c.photo)}" alt="">`:'<img class="fb" src="img/logo.png" alt="">'}</div><h4>${E(c.name)}</h4><div class="meta"><span>${c.exp} tahun · ★ ${Number(c.rating).toFixed(1)}</span><span class="tag">${E(c.spec)}</span><span class="tag ${st}">● ${E(c.status)}</span><span>${done} layanan · ${R(rev)}</span></div><div class="acts" style="margin:8px 4px 4px"><button class="btn sm gold" data-act="editCap" data-id="${c.id}">${ic('edit')}Edit</button><button class="btn sm" data-act="cycleCap" data-id="${c.id}">Ubah status</button><button class="btn sm danger" data-del="cap|${c.id}" aria-label="Hapus">${ic('trash')}</button></div></div>`}).join('')}</div>${db.capsters.length?'':empty('Belum ada capster','scissors')}`;
+V.capsters=()=>`<div class="filters"><button class="btn gold sm" data-act="addCap">${ic('plus')}Tambah Capster</button></div><div class="cards">${db.capsters.map(c=>{const st=c.status==='Tersedia'?'ok':(c.status==='Libur'||c.status==='Istirahat')?'mute':'warn';const done=txs().filter(t=>t.capsterId===c.id).length,rev=sum(txs().filter(t=>t.capsterId===c.id),t=>t.total);return `<div class="card ccard"><div class="ph">${c.photo?`<img src="${E(c.photo)}" alt="">`:'<img class="fb" src="img/logo-192.webp" alt="">'}</div><h4>${E(c.name)}</h4><div class="meta"><span>${c.exp} tahun · ★ ${Number(c.rating).toFixed(1)}</span><span class="tag">${E(c.spec)}</span><span class="tag ${st}">● ${E(c.status)}</span><span>${done} layanan · ${R(rev)}</span></div><div class="acts" style="margin:8px 4px 4px"><button class="btn sm gold" data-act="editCap" data-id="${c.id}">${ic('edit')}Edit</button><button class="btn sm" data-act="cycleCap" data-id="${c.id}">Ubah status</button><button class="btn sm danger" data-del="cap|${c.id}" aria-label="Hapus">${ic('trash')}</button></div></div>`}).join('')}</div>${db.capsters.length?'':empty('Belum ada capster','scissors')}`;
 
 V.customers=()=>{
   const m=new Map(),add=(name,wa,spend,date)=>{if(!name||name==='Umum')return;const k=(wa||name).toLowerCase().replace(/\s+/g,'');const c=m.get(k)||{name,wa:wa||'',visits:0,spend:0,last:''};c.visits++;c.spend+=spend;if(date>c.last)c.last=date;if(wa&&!c.wa)c.wa=wa;m.set(k,c)};
@@ -635,9 +644,10 @@ V.reports=()=>{
 V.messages=()=>{
   const f=filt.msg,rows=db.messages.filter(m=>f==='Semua'||(f==='Belum dibaca'?!m.read:m.read));
   return `<div class="filters">${['Semua','Belum dibaca','Sudah dibaca'].map(s=>`<button class="chip ${f===s?'on':''}" data-fm="${s}">${s}</button>`).join('')}<span class="sp"></span><button class="btn sm" data-act="readAllMsg">${ic('check')}Tandai semua dibaca</button></div>
-  <div class="card">${rows.length?`<div class="list">${rows.map(m=>{const isNum=/^[\d+\s-]{8,}$/.test(m.contact||'');const wa=isNum?'https://wa.me/'+m.contact.replace(/^0/,'62').replace(/\D/g,''):'';return `<div class="it ${m.read?'':'unread'}"><div class="bx c-gold">${ic('message')}</div><div class="m"><b>${E(m.name)}</b> <small>· ${E(m.contact||'tanpa kontak')} · ${TC.ago(m.created)}</small><p>${E(m.text)}</p>${m.reply?`<div class="reply"><b>Balasan:</b> ${E(m.reply)}</div>`:''}<div class="acts" style="margin-top:8px"><button class="btn sm gold" data-act="replyMsg" data-id="${m.id}">Balas</button>${wa?`<a class="btn sm" target="_blank" rel="noopener" href="${wa}">${ic('message')}WhatsApp</a>`:''}<button class="btn sm" data-act="toggleMsg" data-id="${m.id}">${m.read?'Tandai belum dibaca':'Tandai dibaca'}</button><button class="btn sm danger" data-del="msg|${m.id}" aria-label="Hapus">${ic('trash')}</button></div></div></div>`}).join('')}</div>`:empty('Tidak ada pesan','message')}</div>`;
+  <div class="card">${rows.length?`<div class="list">${rows.map(m=>{const isNum=/^[\d+\s-]{8,}$/.test(m.contact||'');const wa=isNum?'https://wa.me/'+m.contact.replace(/^0/,'62').replace(/\D/g,''):'';return `<div class="it ${m.read?'':'unread'}"><div class="bx ${m.kind==='booking'?'c-green':'c-gold'}">${ic(m.kind==='booking'?'calendar':'message')}</div><div class="m"><b>${E(m.name)}</b> ${m.kind==='booking'?'<span class="tag ok">Booking</span> ':''}<small>· ${E(m.contact||'tanpa kontak')} · ${TC.ago(m.created)}</small><p style="white-space:pre-line">${E(m.text)}</p>${m.reply?`<div class="reply"><b>Balasan:</b> ${E(m.reply)}</div>`:''}<div class="acts" style="margin-top:8px"><button class="btn sm gold" data-act="replyMsg" data-id="${m.id}">Balas</button>${wa?`<a class="btn sm" target="_blank" rel="noopener" href="${wa}">${ic('message')}WhatsApp</a>`:''}<button class="btn sm" data-act="toggleMsg" data-id="${m.id}">${m.read?'Tandai belum dibaca':'Tandai dibaca'}</button><button class="btn sm danger" data-del="msg|${m.id}" aria-label="Hapus">${ic('trash')}</button></div></div></div>`}).join('')}</div>`:empty('Tidak ada pesan','message')}</div>`;
 };
 
+V.sim=()=>`<div id="simMount" style="max-width:640px"></div>`;
 V.notifs=()=>`<div class="filters"><button class="btn sm" data-act="readAllNotif">${ic('check')}Tandai semua dibaca</button><button class="btn sm danger" data-act="clearNotif">${ic('trash')}Hapus semua</button></div><div class="card">${db.notifications.length?`<div class="list">${db.notifications.map(n=>{const tgt=n.type==='booking'?'bookings':n.type==='message'?'messages':n.type==='queue'?'queue':null;const icn={booking:'calendar',message:'message',queue:'ticket',system:'info'}[n.type]||'bell';const col={booking:'c-gold',message:'c-blue',queue:'c-purple',system:'c-green'}[n.type]||'c-gold';return `<div class="it ${n.read?'':'unread'}"><div class="bx ${col}">${ic(icn)}</div><div class="m"><p style="margin:0"><b>${E(n.text)}</b></p><small>${TC.ago(n.created)} · ${E(n.type)}</small></div><div class="acts">${tgt?`<button class="btn sm" data-nopen="${n.id}|${tgt}">Buka</button>`:''}${n.read?'':`<button class="btn sm" data-nread="${n.id}">Dibaca</button>`}</div></div>`}).join('')}</div>`:empty('Belum ada notifikasi','bell')}</div>`;
 
 V.prices=()=>{
@@ -672,7 +682,7 @@ function bindSettings(){
 }
 
 /* ---------- aksi ---------- */
-const capFields=()=>[{k:'name',label:'Nama',req:1},{k:'exp',label:'Pengalaman (tahun)',t:'number',min:0,def:1},{k:'spec',label:'Spesialisasi',def:'Potong Rapi'},{k:'rating',label:'Rating (0-5)',t:'number',step:'0.1',min:0,def:4.8},{k:'status',label:'Status',t:'select',opts:['Tersedia','Sedang Mencukur','Libur']},{k:'photo',label:'Foto',t:'image'}];
+const capFields=()=>[{k:'name',label:'Nama',req:1},{k:'exp',label:'Pengalaman (tahun)',t:'number',min:0,def:1},{k:'spec',label:'Spesialisasi',def:'Potong Rapi'},{k:'rating',label:'Rating (0-5)',t:'number',step:'0.1',min:0,def:4.8},{k:'status',label:'Status',t:'select',opts:['Tersedia','Sedang Mencukur','Istirahat','Libur']},{k:'photo',label:'Foto',t:'image'}];
 const svcFields=()=>[{k:'name',label:'Nama paket (tanpa kata "Tukang")',req:1},{k:'desc',label:'Deskripsi singkat'},{k:'price',label:'Harga (Rp)',t:'number',min:0,req:1},{k:'duration',label:'Estimasi durasi (menit)',t:'number',min:5,def:30},{k:'features',label:'Fitur (satu per baris)',t:'textarea'},{k:'popular',label:'Paling favorit',t:'check',hint:'Tandai sebagai paling favorit'}];
 const promoFields=()=>[{k:'title',label:'Nama promo',req:1},{k:'code',label:'Kode promo',req:1},{k:'discount',label:'Diskon (%)',t:'number',min:1,def:10},{k:'until',label:'Berlaku sampai (opsional)',t:'date'},{k:'active',label:'Status',t:'check',def:true,hint:'Aktif'}];
 const prdFields=()=>[{k:'name',label:'Nama produk',req:1},{k:'price',label:'Harga (Rp)',t:'number',min:0,req:1},{k:'stock',label:'Stok',t:'number',min:0,def:10}];
@@ -692,7 +702,7 @@ const A={
   addBooking(){form('Tambah Booking',[{k:'name',label:'Nama',req:1},{k:'wa',label:'WhatsApp'},{k:'serviceId',label:'Layanan',t:'select',opts:db.services.map(s=>[s.id,'Tukang '+s.name])},{k:'capsterId',label:'Capster',t:'select',opts:[['','Siapa saja'],...db.capsters.map(c=>[c.id,c.name])]},{k:'date',label:'Tanggal',t:'date',def:TC.today(),req:1},{k:'time',label:'Jam',t:'time',def:'10:00',req:1}],{},o=>{db.bookings.unshift({id:TC.uid('b'),name:o.name.trim(),wa:o.wa,serviceId:o.serviceId,capsterId:o.capsterId,date:o.date,time:o.time,status:'Dikonfirmasi',promo:'',created:Date.now()});save();toast('Booking ditambahkan');render()},'Tambah')},
   addCap(){form('Tambah Capster',capFields(),{},o=>{o.name=o.name.trim();o.id=TC.uid('c');db.capsters.push(o);save();toast('Capster ditambahkan');render()},'Tambah')},
   editCap(id){const c=cap(id);form('Edit Capster',capFields(),c,o=>{Object.assign(c,o);save();toast('Capster diperbarui');render()})},
-  cycleCap(id){const c=cap(id),o=['Tersedia','Sedang Mencukur','Libur'];c.status=o[(o.indexOf(c.status)+1)%3];save();toast(c.name+': '+c.status);render()},
+  cycleCap(id){const c=cap(id),o=['Tersedia','Sedang Mencukur','Istirahat','Libur'];c.status=o[(o.indexOf(c.status)+1)%4];save();toast(c.name+': '+c.status);render()},
   replyMsg(id){const m=db.messages.find(x=>x.id===id);form('Balas '+m.name,[{k:'reply',label:'Balasan',t:'textarea',req:1}],{reply:m.reply},o=>{m.reply=o.reply.trim();m.read=true;save();toast('Balasan tersimpan');render()},'Simpan balasan')},
   toggleMsg(id){const m=db.messages.find(x=>x.id===id);m.read=!m.read;save();render()},
   readAllMsg(){db.messages.forEach(m=>m.read=true);save();render()},
@@ -724,7 +734,8 @@ document.addEventListener('click',e=>{
   if(t=e.target.closest('[data-add]')){const p=t.dataset.add.split('|');addCart(p[0],p[1]);return}
   if(t=e.target.closest('[data-q]')){const p=t.dataset.q.split('|'),l=pos.cart[+p[0]];if(l){const nq=l.qty+ +p[1];if(l.type==='prd'&&nq>(prd(l.id)||{stock:0}).stock){toast('Stok tidak cukup');return}l.qty=nq;if(l.qty<1)pos.cart.splice(+p[0],1);renderView()}return}
   if(t=e.target.closest('[data-ptab]')){pos.tab=t.dataset.ptab;renderView();return}
-  if(t=e.target.closest('[data-pm]')){pos.method=t.dataset.pm;pos.paid='';renderView();return}
+  if(t=e.target.closest('[data-pm]')){pos.method=t.dataset.pm;pos.paid='';pos.qok=false;renderView();return}
+  if(e.target.matches&&e.target.matches('[data-qok]')){pos.qok=e.target.checked;updPos();return}
   if(t=e.target.closest('[data-qp]')){pos.paid=t.dataset.qp;renderView();return}
   if(t=e.target.closest('[data-rc]')){showReceipt(t.dataset.rc,false);return}
   if(t=e.target.closest('[data-void]')){voidTx(t.dataset.void);return}
@@ -766,13 +777,14 @@ function renderView(){
   $('#view').innerHTML=V[view]();
   if(view==='settings')bindSettings();
   if(view==='pos')updPos();
+  if(view==='sim')TC.sim.mount($('#simMount'));
 }
 function render(){db=TC.load();renderNav();renderView()}
 setInterval(()=>{const n=TC.wibNow();const el=$('#clockChip');if(el)el.innerHTML=ic('clock','sm')+`<b>${pad(n.h)}:${pad(n.m)}:${pad(n.s)}</b> WIB`},1000);
 let rt;window.addEventListener('tc:change',()=>{if(self)return;clearTimeout(rt);rt=setTimeout(()=>{db=TC.load();renderNav();if(view!=='pos'&&!modalOpen())renderView()},80)});
 window.addEventListener('storage',()=>{db=TC.load();renderNav();if(view!=='pos'&&!modalOpen())renderView()});
 function boot(){db=TC.load();render()}
-initStatic();
+initStatic();TC.sim.init();
 if(authed())enter();else $('#login').classList.remove('hide');
 })();
 </script>
