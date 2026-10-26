@@ -19,7 +19,7 @@ body{min-height:100vh;background:radial-gradient(900px 420px at 90% -8%,rgba(216
 .login .art{position:relative;overflow:hidden;padding:48px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(160deg,#0b1210,#16231e 55%,#1f2d1f)}
 .login .art::after{content:"";position:absolute;right:-80px;top:-40px;width:70%;height:130%;background:repeating-linear-gradient(115deg,rgba(216,181,101,.10) 0 60px,transparent 60px 120px)}
 .login .art>*{position:relative;z-index:1}
-.login .art img.big{width:120px;height:120px;border-radius:28px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.login .art img.big{width:120px;height:120px;padding:10px;border-radius:30px;background:linear-gradient(135deg,#1d2b25,#0a100e);border:1px solid rgba(216,181,101,.5);object-fit:contain;box-shadow:0 20px 50px rgba(0,0,0,.5)}
 .login .art h2{font-size:clamp(30px,3.6vw,46px);line-height:1.08;letter-spacing:-.02em;font-weight:800;color:#f3efe6;margin:26px 0 12px}
 .login .art p{color:#a9b7b0;max-width:420px}
 .login .feat{display:grid;gap:12px;margin-top:30px}
@@ -41,8 +41,8 @@ body{min-height:100vh;background:radial-gradient(900px 420px at 90% -8%,rgba(216
 .app{display:grid;grid-template-columns:272px 1fr;min-height:100vh}
 aside{background:var(--bg2);border-right:1px solid var(--line);padding:18px 14px;position:sticky;top:0;height:100vh;overflow:auto;display:flex;flex-direction:column}
 .sb-brand{display:flex;align-items:center;gap:11px;padding:4px 8px 18px}
-.sb-brand .logo{width:44px;height:44px;border-radius:13px;background:#000;display:grid;place-items:center;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.4)}
-.sb-brand .logo img{width:40px;height:40px}
+.sb-brand .logo{width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,#1d2b25,#0a100e);border:1px solid rgba(216,181,101,.5);display:grid;place-items:center;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+.sb-brand .logo img{width:36px;height:36px;object-fit:contain}
 .sb-brand b{display:block;line-height:1.1;font-size:15px}.sb-brand small{color:var(--muted);font-size:11px}
 .grp{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:800;padding:14px 12px 6px}
 .nav{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:13px;color:var(--muted);font-weight:700;font-size:14px;cursor:pointer;border:0;background:none;width:100%;text-align:left;transition:.15s;position:relative}
@@ -192,14 +192,14 @@ td.num,th.num{text-align:right;white-space:nowrap}
 </style>
 </head>
 <body>
-<div id="loader"><div class="box"><img src="img/logo-192.webp" width="112" height="112" alt="Logo"><div class="nm">Tukang Cukur</div><div class="sb">Dasbor Admin</div><div class="bar"><i></i></div></div></div>
+<div id="loader"><div class="box"><div class="ld-logo"><span class="ld-ring"></span><img src="img/logo-t-192.webp" width="120" height="120" alt="Logo Tukang Cukur"></div><div class="nm">Tukang Cukur</div><div class="sb">Dasbor Admin</div><div class="bar"><i></i></div><div class="skip">Menyiapkan dasbor&hellip;</div></div><div class="ld-foot"><div class="ld-credit">Sistem &amp; Website Developer<a href="https://benyoriki.com" target="_blank" rel="noopener">benyoriki.com</a></div><div class="ld-pole"></div></div></div>
 <script>(function(){var s=1;try{var n=performance.getEntriesByType("navigation")[0],t=n?n.type:"navigate";if(t==="back_forward")s=0;else if(t==="navigate"&&document.referrer&&document.referrer.indexOf(location.origin)===0)s=0}catch(e){}if(!s){var l=document.getElementById("loader");if(l)l.parentNode.removeChild(l)}})()</script>
 
 <!-- ============ LOGIN ============ -->
 <div class="login hide" id="login">
   <div class="art">
     <div>
-      <img class="big" src="img/logo-192.webp" width="120" height="120" alt="Logo Tukang Cukur">
+      <img class="big" src="img/logo-t-192.webp" width="120" height="120" alt="Logo Tukang Cukur">
       <h2>Kelola barbershop dari satu dasbor.</h2>
       <p>Kasir, booking, antrean, kas masuk &amp; keluar, laporan, sampai cetak struk termal — semua dalam satu tempat.</p>
       <div class="feat">
@@ -232,7 +232,7 @@ td.num,th.num{text-align:right;white-space:nowrap}
 <div class="app hide" id="app">
   <div class="overlay" id="overlay"></div>
   <aside id="side">
-    <div class="sb-brand"><span class="logo"><img src="img/logo-96.webp" width="40" height="40" alt=""></span><span><b id="sbName">Tukang Cukur</b><small>Dasbor Admin</small></span></div>
+    <div class="sb-brand"><span class="logo"><img src="img/logo-t-96.webp" width="40" height="40" alt=""></span><span><b id="sbName">Tukang Cukur</b><small>Dasbor Admin</small></span></div>
     <div id="navList"></div>
     <div class="sb-user"><span class="avatar" id="avatar">A</span><span><b id="uName">Admin</b><small id="uMail"></small></span><button id="logout" title="Keluar" aria-label="Keluar"></button></div>
   </aside>

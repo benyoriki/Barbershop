@@ -13,7 +13,7 @@
     l.classList.add('hide');
     setTimeout(function () { if (l.parentNode) l.parentNode.removeChild(l); }, 600);
   }
-  if (loader) { setTimeout(hideLoader, 3000); loader.addEventListener('click', hideLoader); }
+  if (loader) { setTimeout(hideLoader, 3000); loader.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('a')) return; hideLoader(); }); }
 
   /* ---------- util ---------- */
   function toast(t) {
@@ -183,22 +183,17 @@
     var mEl = $('#lpMsg'); mEl.textContent = msg; mEl.className = 'lp-msg ' + cls;
     $('#lpWait').textContent = wait.length; $('#lpServ').textContent = Math.max(serv.length, cutting.length);
     $('#lpEst').textContent = wait.length ? fmtMin(est) : '—';
-    $('#lpCutN').textContent = Math.max(serv.length, cutting.length) || '';
-    $('#lpRestN').textContent = rest.length || '';
-
-    /* sedang dicukur: pasangkan capster dengan pelanggan */
-    var rows = [], n = Math.max(cutting.length, serv.length);
-    for (var i = 0; i < n; i++) {
-      var c = cutting[i], q = serv[i];
-      rows.push('<div class="lrow">' + (c ? '<img src="' + E(c.photo || 'img/logo-96.webp') + '" alt="" width="40" height="40">' : '<div class="no">' + I('scissors', 'sm') + '</div>') +
-        '<div class="m"><b>' + E(c ? c.name : 'Capster') + '</b><small>Mencukur ' + (q ? E(firstName(q.name)) : 'pelanggan') + '</small></div><span class="tag warn"><i class="dot warn"></i>Dicukur</span></div>');
-    }
-    $('#lpCut').innerHTML = rows.length ? rows.join('') : '<div class="lnone">Belum ada yang sedang dicukur.</div>';
-
-    /* istirahat */
-    $('#lpRest').innerHTML = rest.length ? rest.map(function (c) {
-      return '<span class="chip"><img src="' + E(c.photo || 'img/logo-96.webp') + '" alt="" width="26" height="26">' + E(c.name) + '</span>';
-    }).join('') : '<div class="lnone">Semua capster sedang bertugas.</div>';
+    /* semua capster: status + pasangan pelanggan */
+    var order = { 'Sedang Mencukur': 0, 'Tersedia': 1, 'Istirahat': 2, 'Libur': 3 }, si = 0;
+    var caps = cs.slice().sort(function (x, y) { return (order[x.status] == null ? 4 : order[x.status]) - (order[y.status] == null ? 4 : order[y.status]); });
+    $('#lpCapN').textContent = ready.length + '/' + cs.filter(function (c) { return c.status !== 'Libur'; }).length + ' siap';
+    $('#lpCaps').innerHTML = caps.length ? caps.map(function (c) {
+      var k = 'ok', sub = 'Siap melayani', lab = 'Tersedia';
+      if (c.status === 'Sedang Mencukur') { var q = serv[si++]; k = 'warn'; lab = 'Mencukur'; sub = 'Mencukur ' + (q ? E(firstName(q.name)) : 'pelanggan'); }
+      else if (c.status === 'Istirahat') { k = 'mute'; lab = 'Istirahat'; sub = 'Kembali sebentar lagi'; }
+      else if (c.status === 'Libur') { k = 'mute'; lab = 'Libur'; sub = 'Tidak bertugas hari ini'; }
+      return '<div class="cp ' + k + '"><span class="av"><img src="' + E(c.photo || 'img/logo-t-96.webp') + '" alt="" width="44" height="44"></span><div class="m"><b>' + E(c.name) + '</b><small>' + sub + '</small></div><span class="st"><i></i>' + lab + '</span></div>';
+    }).join('') : '<div class="lnone">Belum ada data capster.</div>';
 
     /* antrean berikutnya (nama depan saja demi privasi) */
     var nx = wait.slice(0, 3).map(function (q) {
